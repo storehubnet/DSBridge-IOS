@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "dsBridge"
-  s.version      = "3.0.6"
+  s.version      = "3.0.7"
   s.summary      = "An ios bridge for calling functions synchronously and asynchronously between JavaScript and Object-C in WKWebView/UIWebView"
 
   # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
  An javascript bridge for calling functions synchronously and asynchronously
                    DESC
 
-  s.homepage     = "https://github.com/wendux/DSBridge-IOS.git"
+  s.homepage     = "https://github.com/storehubnet/DSBridge-IOS.git"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -64,11 +64,11 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "10.0"
   # s.platform     = :ios, "5.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = "8.0"
+  s.ios.deployment_target = "10.0"
   # s.osx.deployment_target = "10.7"
   # s.watchos.deployment_target = "2.0"
   # s.tvos.deployment_target = "9.0"
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/wendux/DSBridge-IOS.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/storehubnet/DSBridge-IOS.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

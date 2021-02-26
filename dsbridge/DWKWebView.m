@@ -79,34 +79,36 @@ completionHandler:(void (^)(NSString * _Nullable result))completionHandler
         completionHandler(result);
         
     }else {
+        // If Dialog is blocked
         if(!jsDialogBlock){
             completionHandler(nil);
-        }
-        if(self.DSUIDelegate && [self.DSUIDelegate respondsToSelector:
-                                 @selector(webView:runJavaScriptTextInputPanelWithPrompt
-                                           :defaultText:initiatedByFrame
-                                           :completionHandler:)])
-        {
-            return [self.DSUIDelegate webView:webView runJavaScriptTextInputPanelWithPrompt:prompt
-                                  defaultText:defaultText
-                             initiatedByFrame:frame
-                            completionHandler:completionHandler];
-        }else{
-            dialogType=3;
-            if(jsDialogBlock){
-                promptHandler=completionHandler;
+        } else {
+            if(self.DSUIDelegate && [self.DSUIDelegate respondsToSelector:
+                                     @selector(webView:runJavaScriptTextInputPanelWithPrompt
+                                               :defaultText:initiatedByFrame
+                                               :completionHandler:)])
+            {
+                return [self.DSUIDelegate webView:webView runJavaScriptTextInputPanelWithPrompt:prompt
+                                      defaultText:defaultText
+                                 initiatedByFrame:frame
+                                completionHandler:completionHandler];
+            }else{
+                dialogType=3;
+                if(jsDialogBlock){
+                    promptHandler=completionHandler;
+                }
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle:prompt
+                                      message:@""
+                                      delegate:self
+                                      cancelButtonTitle:dialogTextDic[@"promptCancelBtn"]?dialogTextDic[@"promptCancelBtn"]:@"取消"
+                                      otherButtonTitles:dialogTextDic[@"promptOkBtn"]?dialogTextDic[@"promptOkBtn"]:@"确定",
+                                      nil];
+                [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+                txtName = [alert textFieldAtIndex:0];
+                txtName.text=defaultText;
+                [alert show];
             }
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle:prompt
-                                  message:@""
-                                  delegate:self
-                                  cancelButtonTitle:dialogTextDic[@"promptCancelBtn"]?dialogTextDic[@"promptCancelBtn"]:@"取消"
-                                  otherButtonTitles:dialogTextDic[@"promptOkBtn"]?dialogTextDic[@"promptOkBtn"]:@"确定",
-                                  nil];
-            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-            txtName = [alert textFieldAtIndex:0];
-            txtName.text=defaultText;
-            [alert show];
         }
     }
 }
