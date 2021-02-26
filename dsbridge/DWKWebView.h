@@ -9,7 +9,7 @@
 #import <WebKit/WebKit.h>
 
 typedef void (^JSCallback)(NSString * _Nullable result,BOOL complete);
-
+typedef void (^JSCompletion)(id _Nullable value);
 @interface DWKWebView : WKWebView <WKUIDelegate>
 
 @property (nullable, nonatomic, weak) id <WKUIDelegate> DSUIDelegate;
@@ -17,9 +17,10 @@ typedef void (^JSCallback)(NSString * _Nullable result,BOOL complete);
 - (void)loadUrl: (NSString * _Nonnull) url;
 
 // Call javascript handler
--(void) callHandler:(NSString * _Nonnull) methodName  arguments:(NSArray * _Nullable) args;
--(void) callHandler:(NSString * _Nonnull) methodName  completionHandler:(void (^ _Nullable)(id _Nullable value))completionHandler;
--(void) callHandler:(NSString * _Nonnull) methodName  arguments:(NSArray * _Nullable) args completionHandler:(void (^ _Nullable)(id _Nullable value))completionHandler;
+- (void)callHandler:(NSString * _Nonnull)methodName dict:(NSDictionary * _Nonnull)args;
+- (void)callHandler:(NSString * _Nonnull)methodName array:(NSArray * _Nonnull)args;
+- (void)callHandler:(NSString * _Nonnull)methodName completionHandler:(JSCompletion _Nullable )completionHandler;
+- (void)callHandler:(NSString * _Nonnull)methodName arguments:(id _Nullable)args completionHandler:(JSCompletion _Nullable)completionHandler;
 
 // set a listener for javascript closing the current page.
 - (void)setJavascriptCloseWindowListener:(void(^_Nullable)(void))callback;
