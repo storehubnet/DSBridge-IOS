@@ -340,21 +340,24 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completi
     [self loadRequest:request];
 }
 
-
-- (void)callHandler:(NSString *)methodName arguments:(NSArray *)args{
+- (void)callHandler:(NSString *)methodName dict:(NSDictionary *)args {
     [self callHandler:methodName arguments:args completionHandler:nil];
 }
 
-- (void)callHandler:(NSString *)methodName completionHandler:(void (^)(id _Nullable))completionHandler{
+- (void)callHandler:(NSString *)methodName array:(NSArray *) args {
+    [self callHandler:methodName arguments:args completionHandler:nil];
+}
+
+- (void)callHandler:(NSString *)methodName completionHandler:(JSCompletion _Nullable)completionHandler {
     [self callHandler:methodName arguments:nil completionHandler:completionHandler];
 }
 
--(void)callHandler:(NSString *)methodName arguments:(NSArray *)args completionHandler:(void (^)(id  _Nullable value))completionHandler
+-(void)callHandler:(NSString *)methodName arguments:(id _Nullable)args completionHandler:(JSCompletion _Nullable)completionHandler
 {
     DSCallInfo *callInfo=[[DSCallInfo alloc] init];
     callInfo.id=[NSNumber numberWithInt: callId++];
-    callInfo.args=args==nil?@[]:args;
-    callInfo.method=methodName;
+    callInfo.args = [JSBUtil objToJsonString: args];
+    callInfo.method = methodName;
     if(completionHandler){
         [handerMap setObject:completionHandler forKey:callInfo.id];
     }
@@ -375,7 +378,7 @@ initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completi
 
 - (void) dispatchJavascriptCall:(DSCallInfo*) info{
     NSString * json=[JSBUtil objToJsonString:@{@"method":info.method,@"callbackId":info.id,
-                                               @"data":[JSBUtil objToJsonString: info.args]}];
+                                               @"data": info.args}];
     [self evaluateJavaScript:[NSString stringWithFormat:@"window._handleMessageFromNative(%@)",json]
            completionHandler:nil];
 }
